@@ -1,5 +1,5 @@
 async function fetchUsers() {
-    const response = await fetch("../users.json");
+    const response = await fetch('../users.json');
     const users = await response.json();
     return users;
 }
@@ -10,36 +10,37 @@ function pageByURL(pagesCount) {
     const searchParams = new URLSearchParams(paramsString);
     let currentPage;
 
-    if (searchParams.get("page") === null || +searchParams.get("page") < 1 || +searchParams.get("page") > pagesCount) {
+    if (searchParams.get('page') === null || +searchParams.get('page') < 1 || +searchParams.get('page') > pagesCount) {
         currentPage = START_PAGE_NUMBER;
     } else {
-        currentPage = +searchParams.get("page");
+        currentPage = +searchParams.get('page');
     }
     return currentPage;
 }
 
 function clearTable() {
-    const table = document.querySelector(".table__tbody");
-    const userRow = document.querySelectorAll(".user-row");
+    const table = document.querySelector('.table__tbody');
+    const userRow = document.querySelectorAll('.user-row');
     for (let i = 0; i < userRow.length; i++) {
         table.removeChild(userRow[i]);
     }
 }
 
 function updateTable(users) {
-    // clearTable();
-    const tableBody = document.querySelector(".table__tbody");
+    clearTable();
+    const tableBody = document.querySelector('.table__tbody');
     for (const user of users) {
-        const tr = document.createElement("tr");
-        const tdFirstName = document.createElement("td");
-        const tdLastName = document.createElement("td");
-        const tdAbout = document.createElement("td");
-        const pAbout = document.createElement("p");
-        const tdEyeColor = document.createElement("td");
-        tdFirstName.classList.add("first-name");
-        tdLastName.classList.add("last-name");
-        tdAbout.classList.add("about");
-        tdEyeColor.classList.add("eye-color");
+        const tr = document.createElement('tr');
+        const tdFirstName = document.createElement('td');
+        const tdLastName = document.createElement('td');
+        const tdAbout = document.createElement('td');
+        const pAbout = document.createElement('p');
+        const tdEyeColor = document.createElement('td');
+        tr.classList.add('user-row');
+        tdFirstName.classList.add('first-name');
+        tdLastName.classList.add('last-name');
+        tdAbout.classList.add('about');
+        tdEyeColor.classList.add('eye-color');
         tdFirstName.innerHTML = user.name.firstName;
         tdLastName.innerHTML = user.name.lastName;
         pAbout.innerHTML = user.about;
@@ -59,30 +60,81 @@ function usersByPage(users, page, usersByPage) {
 }
 
 function updatePaginationElements(currentPage, pageCount) {
-    const paginationContainer = document.querySelector(".pagination");
-    const previousPageButton = document.querySelector(".pagination__button_previous-page");
-    const nextPageButton = document.querySelector(".pagination__button_next-page");
+    const paginationContainer = document.querySelector('.pagination');
+    const previousPageButton = document.querySelector('.pagination__button_previous-page');
+    const nextPageButton = document.querySelector('.pagination__button_next-page');
     for (let i = 1; i <= pageCount; i++) {
-        const pageButton = document.createElement("button");
+        const pageButton = document.createElement('button');
         pageButton.classList.add('pagination__button');
         pageButton.innerHTML = i;
         if (currentPage === i) {
-            pageButton.classList.add("pagination__button_current-page");
+            pageButton.classList.add('pagination__button_current-page');
         }
-        pageButton.addEventListener("click", () => {
+        pageButton.addEventListener('click', () => {
             paginate(i);
         })
         paginationContainer.insertBefore(pageButton, nextPageButton);
     }
 
     if (currentPage <= 1) {
-        previousPageButton.setAttribute("disabled", "disabled");
+        previousPageButton.setAttribute('disabled', 'disabled');
     }
     if (currentPage >= pageCount) {
-        nextPageButton.setAttribute("disabled", "disabled");
+        nextPageButton.setAttribute('disabled', 'disabled');
     }
 }
 
 function paginate(currentPage) {
     document.location.href = `${window.location.pathname}?page=${currentPage}`;
+}
+
+function clearAllHeaders() {
+    let headers = document.querySelectorAll('.header');
+    headers.forEach((item) => {
+        item.classList.remove('header_active');
+    })
+}
+
+function sortUsersByFirstName(users) {
+    clearAllHeaders();
+    let headerFirstName = document.querySelector('.header_first-name');
+    headerFirstName.classList.add('header_active');
+
+    return users.sort((a, b) => {
+        return a.name.firstName > b.name.firstName ? 1 : -1;
+    })
+}
+
+function sortUsersByLastName(users) {
+    clearAllHeaders();
+    let headerLastName = document.querySelector('.header_last-name');
+    headerLastName.classList.add('header_active');
+
+    return users.sort((a, b) => {
+        return a.name.lastName > b.name.lastName ? 1 : -1;
+    })
+}
+
+function sortUsersByDescription(users) {
+    clearAllHeaders();
+    let headerAbout = document.querySelector('.header_about');
+    headerAbout.classList.add('header_active');
+
+    return users.sort((a, b) => {
+        return a.about > b.about ? 1 : -1;
+    })
+}
+
+function sortUsersByEyeColor(users) {
+    clearAllHeaders();
+    let headerEyeColor = document.querySelector('.header_eye-color');
+    headerEyeColor.classList.add('header_active');
+
+    return users.sort((a, b) => {
+        return a.eyeColor > b.eyeColor ? 1 : -1 ;
+    })
+}
+
+function saveSortParams(sortBy) {
+    localStorage.setItem('sort', sortBy);
 }

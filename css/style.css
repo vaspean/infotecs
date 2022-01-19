@@ -21,6 +21,19 @@
     border-collapse: collapse;
 }
 
+.header {
+    cursor: pointer;
+}
+
+.header_active {
+    background-color: black;
+    color: white;
+}
+
+.header:hover {
+    opacity: 0.5;
+}
+
 .table th, .table td {
     padding: 10px 10px;
     border: 1px solid black;
