@@ -26,13 +26,16 @@ function clearTable() {
     }
 }
 
-function updateTable(users) {
+function updateTable(users, hiddenColumns) {
+    console.log(hiddenColumns);
     clearTable();
     const tableBody = document.querySelector('.table__tbody');
     for (const user of users) {
         const tr = document.createElement('tr');
         const tdFirstName = document.createElement('td');
+        const pFirstName = document.createElement('p');
         const tdLastName = document.createElement('td');
+        const pLastName = document.createElement('p');
         const tdAbout = document.createElement('td');
         const pAbout = document.createElement('p');
         const tdEyeColor = document.createElement('td');
@@ -41,17 +44,34 @@ function updateTable(users) {
         tdLastName.classList.add('last-name');
         tdAbout.classList.add('about');
         tdEyeColor.classList.add('eye-color');
-        tdFirstName.innerHTML = user.name.firstName;
-        tdLastName.innerHTML = user.name.lastName;
+        pFirstName.innerHTML = user.name.firstName;
+        pLastName.innerHTML = user.name.lastName;
         pAbout.innerHTML = user.about;
         tdEyeColor.style.backgroundColor = user.eyeColor;
         tableBody.appendChild(tr);
         tr.appendChild(tdFirstName);
+        tdFirstName.appendChild(pFirstName);
         tr.appendChild(tdLastName);
+        tdLastName.appendChild(pLastName);
         tr.appendChild(tdAbout);
         tdAbout.appendChild(pAbout);
         tr.appendChild(tdEyeColor);
+        
+        if (hiddenColumns.includes(1)) {
+            pFirstName.classList.add('hidden');
+        }
+        if (hiddenColumns.includes(2)) {
+            pLastName.classList.add('hidden');
+        }
+        if (hiddenColumns.includes(3)) {
+            pAbout.classList.add('hidden');
+        }
+        if (hiddenColumns.includes(4)) {
+            tdEyeColor.style.backgroundColor = 'white';
+        }
     }
+
+    toggleTheadTfooterColumns(hiddenColumns);
 }
 
 function usersByPage(users, page, usersByPage) {
@@ -137,4 +157,30 @@ function sortUsersByEyeColor(users) {
 
 function saveSortParams(sortBy) {
     localStorage.setItem('sort', sortBy);
+}
+
+function hideColumn(numberOfColumn, hiddenColumns) {
+    if (!hiddenColumns.includes(numberOfColumn)) {
+        hiddenColumns.push(numberOfColumn);
+    } else {
+        hiddenColumns.splice(hiddenColumns.indexOf(numberOfColumn), 1);
+    }
+}
+
+function toggleTheadTfooterColumns(hiddenColumns) {
+    // console.log(numberOfColumn);
+    const headers = document.querySelectorAll('.header');
+    const footers = document.querySelectorAll('.table__hide-btn');
+    const numberOfColumns = headers.length;
+    console.log(numberOfColumns);
+    for (let i = 1; i <= numberOfColumns; i++) {
+        // console.log(column);
+        if (hiddenColumns.includes(i)) {
+            headers[i - 1].firstElementChild.classList.add('hidden');
+            footers[i - 1].firstElementChild.textContent = '...';
+        } else {
+            headers[i - 1].firstElementChild.classList.remove('hidden');
+            footers[i - 1].firstElementChild.textContent = 'Свернуть';
+        }
+    }
 }

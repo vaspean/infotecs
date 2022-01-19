@@ -14,28 +14,58 @@ document.addEventListener('DOMContentLoaded', async () => {
     const eyeColorHeader = document.querySelector('.header_eye-color');
     const previousPageButton = document.querySelector('.pagination__button_previous-page');
     const nextPageButton = document.querySelector('.pagination__button_next-page');
+    const firstNameHideBtn = document.querySelector('.table__hide-btn_first-name');
+    const lastNameHideBtn = document.querySelector('.table__hide-btn_last-name');
+    const aboutHideBtn = document.querySelector('.table__hide-btn_about');
+    const eyeColorHideBtn = document.querySelector('.table__hide-btn_eye-color');
 
     let sortedUsers = users;
 
+    const hiddenColumns = [];
+
     firstNameHeader.addEventListener('click', () => {
-        updateTable(usersByPage(sortUsersByFirstName(users), currentPage, USERS_PER_PAGE));
+        updateTable(usersByPage(sortUsersByFirstName(users), currentPage, USERS_PER_PAGE), hiddenColumns);
         saveSortParams('firstName');
     });
 
     lastNameHeader.addEventListener('click', () => {
-        updateTable(usersByPage(sortUsersByLastName(users), currentPage, USERS_PER_PAGE));
+        updateTable(usersByPage(sortUsersByLastName(users), currentPage, USERS_PER_PAGE), hiddenColumns);
         saveSortParams('lastName');
     });
 
     aboutHeader.addEventListener('click', () => {
-        updateTable(usersByPage(sortUsersByDescription(users), currentPage, USERS_PER_PAGE));
+        updateTable(usersByPage(sortUsersByDescription(users), currentPage, USERS_PER_PAGE), hiddenColumns);
         saveSortParams('about');
     });
 
     eyeColorHeader.addEventListener('click', () => {
-        updateTable(usersByPage(sortUsersByEyeColor(users), currentPage, USERS_PER_PAGE));
+        updateTable(usersByPage(sortUsersByEyeColor(users), currentPage, USERS_PER_PAGE), hiddenColumns);
         saveSortParams('eyeColor');
     });
+
+
+
+    firstNameHideBtn.addEventListener('click', () => {
+        hideColumn(1, hiddenColumns);
+        updateTable(usersByPage(sortedUsers, currentPage, USERS_PER_PAGE), hiddenColumns);
+    });
+
+    lastNameHideBtn.addEventListener('click', () => {
+        hideColumn(2, hiddenColumns);
+        updateTable(usersByPage(sortedUsers, currentPage, USERS_PER_PAGE), hiddenColumns);
+    });
+
+    aboutHideBtn.addEventListener('click', () => {
+        hideColumn(3, hiddenColumns);
+        updateTable(usersByPage(sortedUsers, currentPage, USERS_PER_PAGE), hiddenColumns);
+    });
+
+    eyeColorHideBtn.addEventListener('click', () => {
+        hideColumn(4, hiddenColumns);
+        updateTable(usersByPage(sortedUsers, currentPage, USERS_PER_PAGE), hiddenColumns);
+    });
+
+
 
     previousPageButton.addEventListener('click', () => {
         if (currentPage > 1) {
@@ -68,5 +98,5 @@ document.addEventListener('DOMContentLoaded', async () => {
             break;
     }
 
-    updateTable(usersByPage(sortedUsers, currentPage, USERS_PER_PAGE));
+    updateTable(usersByPage(sortedUsers, currentPage, USERS_PER_PAGE), hiddenColumns);
 });
