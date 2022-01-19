@@ -40,3 +40,16 @@
     left: 50%;
     transform: translate(-50%, 50%);
 }
+
+.pagination__button {
+    background-color: white;
+    border: 1px solid gray;
+    font-size: 16px;
+    font-weight: 800;
+    cursor: pointer;
+}
+
+.pagination__button_current-page {
+    background-color: black;
+    color: white;
+}
