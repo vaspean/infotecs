@@ -23,63 +23,79 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     const hiddenColumns = [];
 
-    firstNameHeader.addEventListener('click', () => {
+    function sortTableByFirstName() {
         updateTable(usersByPage(sortUsersByFirstName(users), currentPage, USERS_PER_PAGE), hiddenColumns);
         saveSortParams('firstName');
-    });
+    }
 
-    lastNameHeader.addEventListener('click', () => {
+    function sortTableByLastName() {
         updateTable(usersByPage(sortUsersByLastName(users), currentPage, USERS_PER_PAGE), hiddenColumns);
         saveSortParams('lastName');
-    });
+    }
 
-    aboutHeader.addEventListener('click', () => {
+    function sortTableByDescription() {
         updateTable(usersByPage(sortUsersByDescription(users), currentPage, USERS_PER_PAGE), hiddenColumns);
         saveSortParams('about');
-    });
+    }
 
-    eyeColorHeader.addEventListener('click', () => {
+    function sortTableByEyeColor() {
         updateTable(usersByPage(sortUsersByEyeColor(users), currentPage, USERS_PER_PAGE), hiddenColumns);
         saveSortParams('eyeColor');
-    });
+    }
 
-
-
-    firstNameHideBtn.addEventListener('click', () => {
+    function hideFirstNameColumn() {
         hideColumn(1, hiddenColumns);
         updateTable(usersByPage(sortedUsers, currentPage, USERS_PER_PAGE), hiddenColumns);
-    });
+    }
 
-    lastNameHideBtn.addEventListener('click', () => {
+    function hideLastNameColumn() {
         hideColumn(2, hiddenColumns);
         updateTable(usersByPage(sortedUsers, currentPage, USERS_PER_PAGE), hiddenColumns);
-    });
+    }
 
-    aboutHideBtn.addEventListener('click', () => {
+    function hideAboutColumn() {
         hideColumn(3, hiddenColumns);
         updateTable(usersByPage(sortedUsers, currentPage, USERS_PER_PAGE), hiddenColumns);
-    });
+    }
 
-    eyeColorHideBtn.addEventListener('click', () => {
+    function hideEyeColorColumn() {
         hideColumn(4, hiddenColumns);
         updateTable(usersByPage(sortedUsers, currentPage, USERS_PER_PAGE), hiddenColumns);
-    });
+    }
 
-
-
-    previousPageButton.addEventListener('click', () => {
+    function paginatePreviousPage() {
         if (currentPage > 1) {
             currentPage--;
             paginate(currentPage);
         }
-    });
+    }
 
-    nextPageButton.addEventListener('click', () => {
+    function paginateNextPage() {
         if (currentPage < pagesCount) {
             currentPage++;
             paginate(currentPage);
         }
-    });
+    }
+
+    firstNameHeader.addEventListener('click', sortTableByFirstName);
+
+    lastNameHeader.addEventListener('click', sortTableByLastName);
+
+    aboutHeader.addEventListener('click', sortTableByDescription);
+
+    eyeColorHeader.addEventListener('click', sortTableByEyeColor);
+
+    firstNameHideBtn.addEventListener('click', hideFirstNameColumn);
+
+    lastNameHideBtn.addEventListener('click', hideLastNameColumn);
+
+    aboutHideBtn.addEventListener('click', hideAboutColumn);
+
+    eyeColorHideBtn.addEventListener('click', hideEyeColorColumn);
+
+    previousPageButton.addEventListener('click', paginatePreviousPage);
+
+    nextPageButton.addEventListener('click', paginateNextPage);
 
     const sortParamsStorage = localStorage.getItem('sort');
 
