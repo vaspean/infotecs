@@ -3,7 +3,7 @@
 
 */
 async function fetchUsers() {
-    const response = await fetch('infotecs/users.json');
+    const response = await fetch('../infotecs/users.json');
     const users = await response.json();
     return users;
 }
